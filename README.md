@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# BeFit · Exercise Explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Find an exercise, inspect its equipment and target muscles, and explore related examples.**
 
-## Available Scripts
+React · Material UI · React Router · RapidAPI
 
-In the project directory, you can run:
+## Purpose
 
-### `npm start`
+Exercise information is easier to browse when search, movement details, and video references are connected. BeFit combines those views in a frontend project for exploring API-driven search and detail pages.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Search exercises by name, body part, target muscle, or equipment.
+- Browse body-part categories.
+- Open a dedicated page for an exercise.
+- Display related exercises by target muscle and equipment.
+- Retrieve related video results through a separate search API.
 
-### `npm test`
+## Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You need Node.js/npm and access to the RapidAPI services configured in [`src/utils/fetchData.js`](src/utils/fetchData.js).
 
-### `npm run build`
+From the source directory:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Set `REACT_APP_RAPID_API_KEY` in a local `.env` file, then start the frontend:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+Visit [localhost:3000](http://localhost:3000). Restart the development server after changing environment configuration. `npm run build` creates the frontend bundle.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Try it
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Search for an equipment name such as `dumbbell`, select an exercise card, and inspect the detail view. Follow the related exercise cards or video links to continue exploring.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Architecture
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```mermaid
+flowchart LR
+    UI[Search and body-part controls] --> F[Fetch utilities]
+    F --> E[ExerciseDB through RapidAPI]
+    E --> C[Exercise cards and detail page]
+    C --> F
+    F --> V[Video search service]
+    V --> R[Related videos]
+```
 
-## Learn More
+## Project structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Path | Role |
+|---|---|
+| [`src/App.js`](src/App.js) | Home and exercise-detail routing |
+| [`src/Pages/`](src/Pages/) | Page composition and detail fetching |
+| [`src/Components/`](src/Components/) | Search, cards, details, video, and related-exercise views |
+| [`src/utils/fetchData.js`](src/utils/fetchData.js) | Endpoints, headers, and request helper |
+| [`src/assets/`](src/assets/) | Interface images and icons |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Integration boundaries
 
-### Code Splitting
+The app depends on provider access, response formats, and request quotas. Its current requests run in the browser, so `REACT_APP_RAPID_API_KEY` is visible in the built client; private provider credentials belong behind a server-side proxy in a public deployment. The project does not include personalized workout programming or a user-account backend.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
